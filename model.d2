@@ -1,0 +1,68 @@
+DTempo: {
+  shape: sql_table
+  "id_tempo [pk]"
+  "data"
+  "dia"
+  "mes"
+  "ano"
+  "estacao"
+  "semana_epidemiologica"
+  "ano_epidemiologico"
+}
+
+DPaciente: {
+  shape: sql_table
+  "id_paciente [pk]"
+  "idade"
+  "ano_nascimento"
+  "raca_cor"
+  "escolaridade"
+  "ocupacao"
+  "Field"
+}
+
+FNotificacao: {
+  shape: sql_table
+  "id_tempo [fk]"
+  "id_paciente [fk]"
+  "id_local_residencia [fk]"
+}
+
+DSinal_Clinicos: {
+  shape: sql_table
+  "id_sinal_clinico [pk]"
+  "Field"
+}
+
+DEstado: {
+  shape: sql_table
+  "id_estado [pk]"
+  "nome"
+  "descricao"
+}
+
+DLocal_Residencia: {
+  shape: sql_table
+  "id_local_residencia [pk]"
+  "uf"
+  "municipio"
+}
+
+DDemografia: {
+  shape: sql_table
+  "Field1"
+  "Field2"
+  "Field3"
+}
+
+Entity: {
+  shape: sql_table
+  "Field1"
+  "Field2"
+  "Field3"
+}
+
+# relationships
+FNotificacao -> DTempo: "id_tempo"
+FNotificacao -> DPaciente: "id_paciente"
+FNotificacao -> DLocal_Residencia: "id_local_residencia"
