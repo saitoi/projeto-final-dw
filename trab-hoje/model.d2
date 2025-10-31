@@ -17,11 +17,9 @@ DTempo: {
   fim_de_semana: bool
 }
 
-
-
-DHospede: {
+DCliente: {
   shape: sql_table
-  pk_hospede: int {constraint: primary_key}
+  pk_cliente: int {constraint: primary_key}
   cod_hospede_origem: varchar
   nome: varchar
   sexo: char(1)
@@ -49,9 +47,10 @@ DApartamento: {
 
 DTipoServico: {
   shape: sql_table
-  pk_servico: int {constraint: primary_key}
+  pk_tipo_servico: int {constraint: primary_key}
   cod_servico_origem: varchar
   nome_servico: varchar
+  indicador_cobranca: int # ?
   # categoria_servico: varchar
   # unidade: varchar
   # ativo: char
@@ -59,21 +58,55 @@ DTipoServico: {
 
 FServico: {
   shape: sql_table
-  id_servico_fato: bigint {constraint: primary_key}
-  id_tempo: int {constraint: foreign_key}
-  id_hospede: int {constraint: foreign_key}
-  id_apartamento: int {constraint: foreign_key}
-  id_servico: int {constraint: foreign_key}
-  pk_forma_pagto: int {constraint: foreign_key}
-  quantidade: decimal(10,2)
-  valor_unitario: decimal(12,2)
-  valor_total_servico: decimal(14,2)
-  valor_liquido: decimal(14,2)
-  # nro_comanda: varchar(30)
+  pk_servico: bigint {constraint: primary_key}
+  pk_tempo: int {constraint: foreign_key}
+  pk_cliente: int {constraint: foreign_key}
+  pk_apartamento: int {constraint: foreign_key}
+  pk_tipo_servico: int {constraint: foreign_key}
+  pk_consumo: int {constraint: foreign_key}
+  valor_total: decimal
+  valor_total_produtos: decimal
+  quantidade_total_produtos: decimal
+  # valor_liquido: decimal
+  # nro_comanda: varchar
   # nro_hospedagem: varchar(30)
 }
 
-FServico.id_tempo -> DTempo.id_tempo
-FServico.id_hospede -> DHospede.id_hospede
-FServico.id_apartamento -> DApartamento.id_apartamento
-FServico.id_servico -> DTipoServico.pk_servico
+PonteConsumo: {
+  shape: sql_table
+  pk_consumo: int {constraint: primary_key}
+  quantidade_produto: int
+}
+
+DProduto: {
+  shape: sql_table
+  pk_produto: int {constraint: primary_key}
+  descricao: varchar
+  valor_unitario: decimal
+}
+
+
+FServico.pk_tempo -> DTempo.pk_tempo: {
+    source-arrowhead.label: (1,1)
+    target-arrowhead.label: (1,N)
+}
+FServico.pk_cliente -> DCliente.pk_cliente: {
+    source-arrowhead.label: (1,1)
+    target-arrowhead.label: (1,N)
+}
+FServico.pk_apartamento -> DApartamento.pk_apartamento: {
+    source-arrowhead.label: (1,1)
+    target-arrowhead.label: (1,N)
+}
+FServico.pk_tipo_servico -> DTipoServico.pk_tipo_servico: {
+    source-arrowhead.label: (1,1)
+    target-arrowhead.label: (1,N)
+}
+FServico.pk_consumo -> PonteConsumo.pk_consumo: {
+    source-arrowhead.label: (1,1)
+    target-arrowhead.label: (1,N)
+}
+DProduto.pk_produto -> PonteConsumo.pk_produto: {
+    source-arrowhead.label: (1,1)
+    target-arrowhead.label: (1,N)
+}
