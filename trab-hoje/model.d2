@@ -5,7 +5,7 @@ vars: {
   }
 }
 
-DTEMPO: {
+DTempo: {
   shape: sql_table
   pk_tempo: int {constraint: primary_key}
   data: date
@@ -19,7 +19,7 @@ DTEMPO: {
 
 
 
-DHOSPEDE: {
+DHospede: {
   shape: sql_table
   pk_hospede: int {constraint: primary_key}
   cod_hospede_origem: varchar
@@ -35,7 +35,7 @@ DHOSPEDE: {
 #       Tipo da cama é relevante?
 #       Cama de casal é importante?
 
-DAPARTAMENTO: {
+DApartamento: {
   shape: sql_table
   pk_apartamento: int {constraint: primary_key}
   # cod_apartamento_origem: varchar
@@ -69,11 +69,11 @@ FServico: {
   valor_unitario: decimal(12,2)
   valor_total_servico: decimal(14,2)
   valor_liquido: decimal(14,2)
-  nro_comanda: varchar(30)
-  nro_hospedagem: varchar(30)
+  # nro_comanda: varchar(30)
+  # nro_hospedagem: varchar(30)
 }
 
 FServico.id_tempo -> DTempo.id_tempo
 FServico.id_hospede -> DHospede.id_hospede
 FServico.id_apartamento -> DApartamento.id_apartamento
-FServico.id_servico -> DServico.pk_servico
+FServico.id_servico -> DTipoServico.pk_servico
