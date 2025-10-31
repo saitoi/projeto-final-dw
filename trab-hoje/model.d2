@@ -7,56 +7,64 @@ vars: {
 
 DTEMPO: {
   shape: sql_table
-  id_tempo: int {constraint: primary_key}
+  pk_tempo: int {constraint: primary_key}
   data: date
   dia: int
   mes: int
   ano: int
   trimestre: int
   dia_semana: int
-  flag_fim_de_semana: char(1)
+  fim_de_semana: bool
 }
+
+
 
 DHOSPEDE: {
   shape: sql_table
-  id_hospede: int {constraint: primary_key}
-  cod_hospede_origem: varchar(30)
-  nome: varchar(120)
+  pk_hospede: int {constraint: primary_key}
+  cod_hospede_origem: varchar
+  nome: varchar
   sexo: char(1)
-  profissao: varchar(80)
-  pais: varchar(60)
+  profissao: varchar
+  pais: varchar
   uf: char(2)
-  cidade: varchar(80)
+  cidade: varchar
 }
+
+# Atributos a serem reavaliados:
+#       Tipo da cama é relevante?
+#       Cama de casal é importante?
 
 DAPARTAMENTO: {
   shape: sql_table
-  id_apartamento: int {constraint: primary_key}
-  cod_apartamento_origem: varchar(20)
-  numero_apartamento: varchar(10)
-  tipo_apartamento: varchar(40)
-  andar: varchar(10)
-  bloco: varchar(10)
+  pk_apartamento: int {constraint: primary_key}
+  # cod_apartamento_origem: varchar
+  numero_apartamento: varchar
+  nome_tipo_apartamento: varchar
+  andar: varchar
+  # bloco: varchar(10)
 }
 
-DSERVICO: {
+# Comentei alguns atributos
+
+DTipoServico: {
   shape: sql_table
-  id_servico: int {constraint: primary_key}
-  cod_servico_origem: varchar(20)
-  nome_servico: varchar(80)
-  categoria_servico: varchar(40)
-  unidade: varchar(10)
-  ativo: char(1)
+  pk_servico: int {constraint: primary_key}
+  cod_servico_origem: varchar
+  nome_servico: varchar
+  # categoria_servico: varchar
+  # unidade: varchar
+  # ativo: char
 }
 
-FSERVICO: {
+FServico: {
   shape: sql_table
   id_servico_fato: bigint {constraint: primary_key}
   id_tempo: int {constraint: foreign_key}
   id_hospede: int {constraint: foreign_key}
   id_apartamento: int {constraint: foreign_key}
   id_servico: int {constraint: foreign_key}
-  id_forma_pagto: int {constraint: foreign_key}
+  pk_forma_pagto: int {constraint: foreign_key}
   quantidade: decimal(10,2)
   valor_unitario: decimal(12,2)
   valor_total_servico: decimal(14,2)
@@ -65,7 +73,7 @@ FSERVICO: {
   nro_hospedagem: varchar(30)
 }
 
-FSERVICO.id_tempo -> DTEMPO.id_tempo
-FSERVICO.id_hospede -> DHOSPEDE.id_hospede
-FSERVICO.id_apartamento -> DAPARTAMENTO.id_apartamento
-FSERVICO.id_servico -> DSERVICO.id_servico
+FServico.id_tempo -> DTempo.id_tempo
+FServico.id_hospede -> DHospede.id_hospede
+FServico.id_apartamento -> DApartamento.id_apartamento
+FServico.id_servico -> DServico.pk_servico
