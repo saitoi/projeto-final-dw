@@ -1,0 +1,73 @@
+vars: {
+  d2-config: {
+    layout-engine: dagre
+    theme-id: 0
+  }
+}
+
+DTempo: {
+  shape: sql_table
+  id_tempo: int {constraint: primary_key}
+  data: date
+  dia: int
+  mes: int
+  ano: int
+  estacao: varchar
+  semana_epidemiologica: int
+  ano_epidemiologico: int
+}
+
+DPaciente: {
+  shape: sql_table
+  id_paciente: int {constraint: primary_key}
+  idade: int
+  ano_nascimento: int
+  ocupacao: varchar
+  grupo_risco: varchar
+}
+
+DLocal_Residencia: {
+  shape: sql_table
+  id_local_residencia: int {constraint: primary_key}
+  uf: varchar
+  municipio: varchar
+}
+
+DDemografia: {
+  shape: sql_table
+  id_demografia: int {constraint: primary_key}
+  faixa_etaria: varchar
+  sexo: varchar
+  raca_cor: varchar
+  escolaridade: varchar
+}
+
+DSinais_Clinicos: {
+  shape: sql_table
+  id_estado: int {constraint: primary_key}
+  nome: varchar
+  descricao: varchar
+}
+
+FNotificacao: {
+  shape: sql_table
+  id_notificacao: int {constraint: primary_key}
+  id_tempo: int {constraint: foreign_key}
+  id_paciente: int {constraint: foreign_key}
+  id_local_residencia: int {constraint: foreign_key}
+}
+
+FNotificacao.id_tempo -> DTempo.id_tempo: {
+    source-arrowhead.label: (1,1)
+    target-arrowhead.label: (1,N)
+}
+
+FNotificacao.id_paciente -> DPaciente.id_paciente: {
+    source-arrowhead.label: (1,1)
+    target-arrowhead.label: (1,N)
+}
+
+FNotificacao.id_local_residencia -> DLocal_Residencia.id_local_residencia: {
+    source-arrowhead.label: (1,1)
+    target-arrowhead.label: (1,N)
+}
