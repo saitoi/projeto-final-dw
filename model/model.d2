@@ -5,13 +5,15 @@ vars: {
   }
 }
 
-DTempo: {
+DData: {
   shape: sql_table
   id_tempo: int {constraint: primary_key}
   data: date
   dia: int
   mes: int
   ano: int
+  trimestre: int
+  semestre: int
   estacao: varchar
   semana_epidemiologica: int
   ano_epidemiologico: int
@@ -22,15 +24,7 @@ DPaciente: {
   id_paciente: int {constraint: primary_key}
   idade: int
   ano_nascimento: int
-  ocupacao: varchar
   grupo_risco: varchar
-}
-
-DLocal_Residencia: {
-  shape: sql_table
-  id_local_residencia: int {constraint: primary_key}
-  uf: varchar
-  municipio: varchar
 }
 
 DDemografia: {
@@ -40,34 +34,87 @@ DDemografia: {
   sexo: varchar
   raca_cor: varchar
   escolaridade: varchar
+  gestante: varchar
 }
 
-DSinais_Clinicos: {
+DTipo_Notificacao: {
   shape: sql_table
-  id_estado: int {constraint: primary_key}
-  nome: varchar
-  descricao: varchar
+  id_tipo_notificacao: int {constraint: primary_key}
+  flag_obito: bool
+  flag_hospitalizacao: bool
+  num_estado: int
+  descricao_estado: varchar
+}
+
+DSinal_Clinico: {
+  shape: sql_table
+  id_sinal_clinico: int {constraint: primary_key}
+  cefaleia: bool
+  mialgia: bool
+  vomito: bool
+  nausea: bool
+  febre: bool
+  dor_retro: bool
+}
+
+DLocal: {
+  shape: sql_table
+  id_local: int {constraint: primary_key}
+  municipio_id: int
+  mesorregiao_id: int
+  mesorregiao_nome: varchar
+  municipio_nome: varchar
+  microrregiao_id: int
+  microrregiao_nome: varchar
+  populacao_municipio: int
+  populacao_mesorregiao: int
+  populacao_microrregiao: int
 }
 
 FNotificacao: {
   shape: sql_table
-  id_notificacao: int {constraint: primary_key}
-  id_tempo: int {constraint: foreign_key}
+  pk_notificacao: int {constraint: primary_key}
+  id_data: int {constraint: foreign_key}
+  id_demografia: int {constraint: foreign_key}
   id_paciente: int {constraint: foreign_key}
+  id_local_notificacao: int {constraint: foreign_key}
   id_local_residencia: int {constraint: foreign_key}
+  id_tipo_notificacao: int {constraint: foreign_key}
+  id_sinal_clinico: int {constraint: foreign_key}
+  id_notificacao: int
 }
 
-FNotificacao.id_tempo -> DTempo.id_tempo: {
-    source-arrowhead.label: (1,1)
-    target-arrowhead.label: (1,N)
+FNotificacao.id_tipo_notificacao -> DTipo_Notificacao.id_tipo_notificacao: {
+  source-arrowhead.label: (1,1)
+  target-arrowhead.label: (1,N)
+}
+
+FNotificacao.id_sinal_clinico -> DSinal_Clinico.id_sinal_clinico: {
+  source-arrowhead.label: (1,1)
+  target-arrowhead.label: (1,N)
+}
+
+FNotificacao.id_data -> DData.id_tempo: {
+  source-arrowhead.label: (1,1)
+  target-arrowhead.label: (1,N)
 }
 
 FNotificacao.id_paciente -> DPaciente.id_paciente: {
-    source-arrowhead.label: (1,1)
-    target-arrowhead.label: (1,N)
+  source-arrowhead.label: (1,1)
+  target-arrowhead.label: (1,N)
 }
 
-FNotificacao.id_local_residencia -> DLocal_Residencia.id_local_residencia: {
-    source-arrowhead.label: (1,1)
-    target-arrowhead.label: (1,N)
+FNotificacao.id_demografia -> DDemografia.id_demografia: {
+  source-arrowhead.label: (1,1)
+  target-arrowhead.label: (1,N)
+}
+
+FNotificacao.id_local_notificacao -> DLocal.id_local: {
+  source-arrowhead.label: (1,1)
+  target-arrowhead.label: (1,N)
+}
+
+FNotificacao.id_local_residencia -> DLocal.id_local: {
+  source-arrowhead.label: (1,1)
+  target-arrowhead.label: (1,N)
 }
