@@ -16,7 +16,6 @@ DData: {
   semestre: int
   estacao: varchar
   semana_epidemiologica: int
-  ano_epidemiologico: int
 }
 
 DPaciente: {
@@ -61,10 +60,8 @@ DLocal: {
   shape: sql_table
   pk_local: int {constraint: primary_key}
   municipio_id: int
-  mesorregiao_id: int
   mesorregiao_nome: varchar
   municipio_nome: varchar
-  microrregiao_id: int
   microrregiao_nome: varchar
   populacao_municipio: int
   populacao_mesorregiao: int
